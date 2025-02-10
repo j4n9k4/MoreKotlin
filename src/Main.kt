@@ -8,9 +8,25 @@ data class Question<T>(
     val difficulty: Difficulty
 
 )
-
-class Quiz()
+interface ProgressPrintable
 {
+    val progressText: String
+    fun printProgressBar()
+
+}
+class Quiz: ProgressPrintable
+{
+    override val progressText: String
+        get() = "$answered of $total answered"
+
+    override fun printProgressBar()
+    {
+        repeat(answered){print("▓")}
+        repeat(total - answered){ print("▒") }
+        println()
+        println(progressText)
+    }
+
     val question1 = Question<String>("What is your name", "Lard", Difficulty.EASY)
     val question2 = Question<Boolean>("Is the sky green", false, Difficulty.EASY)
     val question3 = Question<Int>("What is 2 + 2", 4, Difficulty.EASY)
@@ -21,18 +37,7 @@ class Quiz()
     }
 }
 
-val Quiz.StudentProgress.progressText: String
-    get() = "$answered of $total answered"
-
-fun Quiz.StudentProgress.printProgress()
-{
-    repeat(answered){print("▓")}
-    repeat(total - answered){ print("▒") }
-    println()
-    println(Quiz.progressText)
-
-}
 fun main()
 {
-    Quiz.printProgress()
+    Quiz().printProgressBar()
 }
