@@ -5,12 +5,19 @@ fun main()
 {
     val time = measureTimeMillis {
         runBlocking {
-            println("Weather forecast")
-            println(getWeatherReport())
-
+            println("${Thread.currentThread().name} - runBlocking function")
+            launch {
+                println("${Thread.currentThread().name} - launch function")
+                withContext(Dispatchers.Default) {
+                    println("${Thread.currentThread().name} - withContext function")
+                    delay(1000)
+                    println("10 results found")
+                }
+                println("${Thread.currentThread().name} - end of the launch function")
+            }
+            println("Loading...")
         }
 
-            println("Have a nice day")
     }
 
 
