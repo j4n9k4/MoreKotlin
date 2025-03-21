@@ -6,22 +6,29 @@ fun main()
     val time = measureTimeMillis {
         runBlocking {
             println("Weather forecast")
-            printForecast()
-            printTemperature()
+            println(getWeatherReport())
+            println("Have a nice day")
         }
     }
 
     println("Execution time: ${time/ 1000.0} seconds")
 }
 
-suspend fun printForecast()
+suspend fun getForecast(): String
 {
     delay(1000)
-    println("Sunny")
+    return "Sunny"
 }
 
-suspend fun printTemperature()
+suspend fun getTemperature():String
 {
     delay(1000)
-    println("30\u00b0c")
+    return "30\u00b0c"
+}
+
+suspend fun getWeatherReport() = coroutineScope {
+    val forecast = async { getForecast() }
+    val temperature = async { getTemperature() }
+
+    "${forecast.await()} ${temperature.await()}"
 }
